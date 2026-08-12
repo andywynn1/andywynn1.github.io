@@ -17,7 +17,7 @@ const projects = [
   {
     id: "flag-football-cv",
     title: "Flag Football CV",
-    image: "public/assets/cv.gif",
+    image: "/assets/cv.gif",
     badges: ["Ultralytics", "OpenCV", "Python"],
     description:
       "A computer vision pipeline for tracking players in a local flag football league using drone footage and YOLO11.",
@@ -27,7 +27,7 @@ const projects = [
   {
     id: "posm-1",
     title: "Polarimeter PCB",
-    image: "public/assets/POSM-1.png",
+    image: "/assets/POSM-1.png",
     badges: ["KiCad", "PCB"],
     description:
       "Designed the schematic and PCB for a compact polarization monitoring module that taps a laser beam, splits it into polarization components with a PBS, and digitizes the photodiode signals for real time power and polarization tracking.",
@@ -37,7 +37,7 @@ const projects = [
    {
     id: "tetris",
     title: "Handheld Tetris Device",
-    image: "public/assets/tetris.png",
+    image: "/assets/tetris.png",
     badges: ["Python"],
     description:
       "A portable Tetris game built on a microcontroller with a small LCD display with correct game logic coded in CircuitPython.",
@@ -48,11 +48,11 @@ const projects = [
   {
     id: "website",
     title: "Personal Portfolio Website",
-    image: "public/assets/website.png",
+    image: "/assets/website.png",
     badges: ["React"],
     description:
       "A responsive portfolio website built with React and Framer Motion.",
-    link: "",
+    link: "https://andywynn1.github.io/",
     icon: "mdi:computer",
   },
  

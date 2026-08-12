@@ -12,13 +12,13 @@ import { Icon } from "@iconify/react";
 const items = [
   {
     id: 1,
-    url: "public/assets/1.png",
+    url: "/assets/1.png",
     title: "Me",
     text: "I am Andrew Nguyen.",
   },
   {
     id: 2,
-    url: "public/assets/4.svg.webp",
+    url: "/assets/4.svg.webp",
     title: "UMN",
     text: "I go to the University of Minnesota Twin Cities, where I study Computer Engineering and Business Management.",
   },

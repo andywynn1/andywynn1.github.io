@@ -85,7 +85,7 @@ const THEME_OPTIONS = Object.keys(THEMES);
 // effect on an image symbol.)
 const SYMBOL_SETS = {
   "X / O": { A: "X", B: "O" },
-  "Sun / Moon": { A: "public/assets/sun.png", B: "public/assets/moon.png" },
+  "Sun / Moon": { A: "/assets/sun.png", B: "/assets/moon.png" },
   "🐶 / 🐱": { A: "🐶", B: "🐱" },
 };
 const SYMBOL_OPTIONS = Object.keys(SYMBOL_SETS);
