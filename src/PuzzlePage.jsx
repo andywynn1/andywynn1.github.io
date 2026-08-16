@@ -14,7 +14,7 @@ export const puzzles = [
     title: "Binairo/Tango",
     icon: "mdi:grid",
     color: "#c9c9c9",
-    media: "src/assets/binairo.png", // drop in an image/gif src here later
+    media: "/assets/binairo.png", // drop in an image/gif src here later
   },
 ];
 
