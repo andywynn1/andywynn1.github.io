@@ -24,6 +24,18 @@ const projects = [
     link: "https://github.com/andywynn1/XFlagCV/blob/main/README.md",
     icon: "mdi:football",
   },
+
+  {
+    id: "posm-2",
+    title: "Electro-Optic Fabry Pérot Shutter",
+    image: "/assets/shutter.png",
+    badges: ["KiCad", "PCB"],
+    description:
+      "A single electrically controlled device that sends cooling, repump, both or neither to the MOT from a single beam path. Paper coming soon.",
+    link: "",
+    icon: "mdi:laser-pointer",
+  },
+  
   {
     id: "posm-1",
     title: "Polarimeter PCB",
@@ -55,6 +67,8 @@ const projects = [
     link: "https://andywynn1.github.io/",
     icon: "mdi:computer",
   },
+
+   
  
 ];
 

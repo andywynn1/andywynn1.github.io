@@ -14,7 +14,7 @@ const items = [
     id: 1,
     url: "/assets/1.png",
     title: "Me",
-    text: "I am Andrew Nguyen.",
+    text: "My name is Andrew Nguyen and I'm from Eden Prairie Minnesota.",
   },
   {
     id: 2,
@@ -22,6 +22,57 @@ const items = [
     title: "UMN",
     text: "I go to the University of Minnesota Twin Cities, where I study Computer Engineering and Business Management.",
   },
+
+  {
+    id: 3,
+    url: "/assets/lab.png",
+    title: "Photonics and Optics at Minnesota",
+    text: "I am a electronics researcher working to build a Magneto-Optical Trap (MOT).",
+  },
+
+   {
+    id: 4,
+    url: "/assets/snowboard.png",
+    title: "Snowboarding",
+    text: "I really like to snowboard in the winter.",
+  },
+
+  {
+    id: 3,
+    url: "/assets/3.png",
+    title: "Weightlifting",
+    text: "I used to powerlift but now I just lift to stay in shape.",
+  },
+
+  {
+    id: 5,
+    url: "/assets/football.png",
+    title: "Football",
+    text: "American Football is my favorite sport and I still play flag football in California during the summer. My favorite football player is Bryce Young.",
+  },
+
+    {
+    id: 6,
+    url: "/assets/brawl.png",
+    title: "Brawl Stars",
+    text: "I still play Brawl Stars sometimes with my friends.",
+  },
+
+    {
+    id: 7,
+    url: "/assets/c.jpg",
+    title: "Music",
+    text: "I love every genre of music but my favorite artist is Lucy Bedroque.",
+  },
+
+    {
+    id: 8,
+    url: "/assets/taco.png",
+    title: "Food",
+    text: "My favorite food in the world are street tacos yum.",
+  },
+
+
   
   
 ];
