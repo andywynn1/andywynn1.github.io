@@ -16,6 +16,15 @@ export const puzzles = [
     color: "#c9c9c9",
     media: "/assets/binairo.png", // drop in an image/gif src here later
   },
+
+  {
+  id: "albums",
+  title: "Study Albums Picker",
+  icon: "mdi:slot-machine",
+  color: "#f5c542",
+  media: null,
+  },
+
 ];
 
 export default function PuzzlePage({ onSelectPuzzle }) {
@@ -38,7 +47,7 @@ export default function PuzzlePage({ onSelectPuzzle }) {
           marginBottom: "40px",
         }}
       >
-        Puzzles
+        Fun
       </h1>
 
       <div

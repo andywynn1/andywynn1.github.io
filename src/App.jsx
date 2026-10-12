@@ -13,6 +13,7 @@ import BackButton from "./BackButton";
 import Title from "./Title";
 import DotField from "./DotField";
 import Binairo from "./Binairo";
+import AlbumSpinner from "./AlbumSpinner";
 
 const RECT_ZOOM_MS = 700;
 const OVERLAY_FADE_IN_MS = 400;
@@ -59,7 +60,7 @@ function App() {
   // "binairo" (PAGE_COLORS has no such key, so this used to silently
   // resolve to undefined and Vignette would fall back to its own black
   // default instead of matching the card you actually came from).
-  const vignetteColor = PAGE_COLORS[page];
+  const vignetteColor = PAGE_COLORS[page] ?? PUZZLE_COLORS[page];
 
   const handleBack = () => {
     setPage("home");
@@ -163,8 +164,16 @@ function App() {
   </>
 )}
 
+{page === "albums" && (
+  <>
+    <AlbumSpinner />
+    <DotField colors={[PUZZLE_COLORS.albums]} />
+    <BackButton onBack={() => setPage("page3")} />
+  </>
+)}
 
-<Vignette color={vignetteColor} intensity={0.4} duration={1.5} />
+
+<Vignette color={vignetteColor} intensity={page === "albums" ? 0 : 0.4} duration={1.5} />
       <TransitionOverlay controls={overlayControls} />
     </div>
   );

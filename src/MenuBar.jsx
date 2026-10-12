@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 const items = [
   { label: "About", color: "#f56c62", icon: "mdi:account" },
   { label: "Portfolio", color: "#508eeb", icon: "mdi:briefcase" },
-  { label: "Puzzles", color: "#ace685", icon: "mdi:puzzle" },
+  { label: "Fun", color: "#ace685", icon: "mdi:party-popper" },
 ];
 
 function hexToRgba(hex, alpha) {
