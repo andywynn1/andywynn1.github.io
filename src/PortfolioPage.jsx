@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react";
 
 const SKILL_CATEGORIES = {
   Languages: ["Python", "React"],
-  Hardware: ["Raspberry Pi"],
+  Hardware: ["FPGA", "Raspberry Pi"],
   Electronics: ["KiCad", "PCB"],
   "Computer Vision / AI": ["Ultralytics", "OpenCV"],
 };
