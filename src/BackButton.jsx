@@ -15,7 +15,7 @@ const easeInBlend = (k1, k2, w1, w2) => {
 };
 
 // ---- EASY TWEAK ZONE ----
-const TOP_OFFSET = 40;
+const TOP_OFFSET = 41;
 const RIGHT_OFFSET = 40;
 const SIZE = 32;
 const EXIT_DURATION_MS = 700; // must match what App.jsx waits before navigating home
