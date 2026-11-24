@@ -5,9 +5,10 @@ import RisingRectangle from "./RisingRectangle";
 import FloatingRectangle from "./FloatingRectangle";
 import MenuBar from "./MenuBar";
 import TransitionOverlay from "./TransitionOverlay";
-import Portfolio from "./PortfolioPage";
 import Puzzles, { puzzles } from "./PuzzlePage";
-import About from "./AboutPage";
+import Room from "./room/Room";
+import { Placeholder, PixelBack, RoomNav } from "./room/RoomUI";
+import { HOTSPOTS } from "./room/roomArt";
 import Vignette from "./Vignette";
 import BackButton from "./BackButton";
 import Title from "./Title";
@@ -53,10 +54,16 @@ const ROUTES = {
   page3: "/fun",
   binairo: "/fun/binairo",
   albums: "/fun/albums",
+  thirty: "/30-for-30",
 };
+
+// Experiences opened from the room live at #/room/<id>.
+const routeFor = (page) => (page.startsWith("detail:") ? `/room/${page.slice(7)}` : ROUTES[page]);
 
 function pageFromHash() {
   const path = window.location.hash.replace(/^#/, "") || "/";
+  const detail = path.match(/^\/room\/([\w-]+)$/);
+  if (detail) return `detail:${detail[1]}`;
   return Object.keys(ROUTES).find((key) => ROUTES[key] === path) ?? "home";
 }
 
@@ -67,7 +74,7 @@ function App() {
   // either undo a step or, after a direct link, fall back to a sensible page.
   const navigate = (target, { replace = false } = {}) => {
     const depth = window.history.state?.d ?? 0;
-    const url = `#${ROUTES[target]}`;
+    const url = `#${routeFor(target)}`;
     if (replace) window.history.replaceState({ d: depth }, "", url);
     else window.history.pushState({ d: depth + 1 }, "", url);
     setPageState(target);
@@ -99,7 +106,8 @@ function App() {
   // "binairo" (PAGE_COLORS has no such key, so this used to silently
   // resolve to undefined and Vignette would fall back to its own black
   // default instead of matching the card you actually came from).
-  const vignetteColor = PAGE_COLORS[page] ?? PUZZLE_COLORS[page];
+  const inRoom = page === "page1" || page === "page2" || page === "thirty" || page.startsWith("detail:");
+  const vignetteColor = inRoom ? "0, 0, 0" : (PAGE_COLORS[page] ?? PUZZLE_COLORS[page]);
 
   const handleBack = () => {
     goBack("home");
@@ -171,21 +179,32 @@ function App() {
         </>
       )}
 
-{page === "page1" && (
+{(page === "page1" || page === "page2") && (
+  <Room
+    focus={page === "page2" ? "chest" : null}
+    current={page}
+    onOpen={(id) => setPage(`detail:${id}`)}
+    onBack={handleBack}
+    onNavigate={(target) => (target === page ? null : setPage(target))}
+  />
+)}
+
+{page.startsWith("detail:") && (
   <>
- 
-    <About />
-    <DotField colors={[PAGE_COLORS.page1]} />
-    <BackButton onBack={handleBack} />
+    <Placeholder
+      title={HOTSPOTS.find((h) => h.id === page.slice(7))?.label ?? "Not found"}
+      note="Placeholder. This experience is built in a later phase."
+    />
+    <PixelBack onBack={() => goBack("page1")} />
+    <RoomNav current="" onNavigate={setPage} />
   </>
 )}
 
-{page === "page2" && (
+{page === "thirty" && (
   <>
- 
-    <Portfolio />
-    <DotField colors={[PAGE_COLORS.page2]} />
-    <BackButton onBack={handleBack} />
+    <Placeholder title="30 for 30" note="Placeholder. The achievement tree is built in a later phase." />
+    <PixelBack onBack={handleBack} />
+    <RoomNav current="thirty" onNavigate={(target) => (target === "thirty" ? null : setPage(target))} />
   </>
 )}
 
@@ -213,7 +232,7 @@ function App() {
 )}
 
 
-<Vignette color={vignetteColor} intensity={page === "albums" || page === "home" ? 0 : 0.4} duration={1.5} />
+<Vignette color={vignetteColor} intensity={page === "albums" || page === "home" ? 0 : inRoom ? 0.5 : 0.4} duration={1.5} />
       <TransitionOverlay controls={overlayControls} />
     </div>
   );
