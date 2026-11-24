@@ -12,6 +12,7 @@ import Vignette from "./Vignette";
 import BackButton from "./BackButton";
 import Title from "./Title";
 import DotField from "./DotField";
+import Haze from "./Haze";
 import Binairo from "./Binairo";
 import AlbumSpinner from "./AlbumSpinner";
 
@@ -126,7 +127,8 @@ function App() {
 />
           <Title></Title>
           
-       <DotField colors={[PAGE_COLORS.page1, PAGE_COLORS.page2, PAGE_COLORS.page3]} />
+       <Haze />
+       <DotField colors={[PAGE_COLORS.page1, PAGE_COLORS.page2, PAGE_COLORS.page3]} orbs />
           
         </>
       )}
@@ -173,7 +175,7 @@ function App() {
 )}
 
 
-<Vignette color={vignetteColor} intensity={page === "albums" ? 0 : 0.4} duration={1.5} />
+<Vignette color={vignetteColor} intensity={page === "albums" || page === "home" ? 0 : 0.4} duration={1.5} />
       <TransitionOverlay controls={overlayControls} />
     </div>
   );
