@@ -44,8 +44,46 @@ function hexToRgbString(hex) {
 const PUZZLE_COLORS = Object.fromEntries(puzzles.map((p) => [p.id, hexToRgbString(p.color)]));
 
 
+// Each page lives at a hash URL so the browser's back button, refresh and
+// direct links work on GitHub Pages without any server config.
+const ROUTES = {
+  home: "/",
+  page1: "/about",
+  page2: "/portfolio",
+  page3: "/fun",
+  binairo: "/fun/binairo",
+  albums: "/fun/albums",
+};
+
+function pageFromHash() {
+  const path = window.location.hash.replace(/^#/, "") || "/";
+  return Object.keys(ROUTES).find((key) => ROUTES[key] === path) ?? "home";
+}
+
 function App() {
-  const [page, setPage] = useState("home");
+  const [page, setPageState] = useState(pageFromHash);
+
+  // history.state.d counts how many in-app steps deep we are, so Back can
+  // either undo a step or, after a direct link, fall back to a sensible page.
+  const navigate = (target, { replace = false } = {}) => {
+    const depth = window.history.state?.d ?? 0;
+    const url = `#${ROUTES[target]}`;
+    if (replace) window.history.replaceState({ d: depth }, "", url);
+    else window.history.pushState({ d: depth + 1 }, "", url);
+    setPageState(target);
+  };
+  const setPage = (target) => navigate(target);
+  const goBack = (fallback = "home") => {
+    if ((window.history.state?.d ?? 0) > 0) window.history.back();
+    else navigate(fallback, { replace: true });
+  };
+
+  useEffect(() => {
+    if (window.history.state === null) window.history.replaceState({ d: 0 }, "");
+    const onPop = () => setPageState(pageFromHash());
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
   const [zoomIndex, setZoomIndex] = useState(null);
   const overlayControls = useAnimationControls();
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -64,7 +102,7 @@ function App() {
   const vignetteColor = PAGE_COLORS[page] ?? PUZZLE_COLORS[page];
 
   const handleBack = () => {
-    setPage("home");
+    goBack("home");
   };
 
   const handleSelect = (index) => {
@@ -162,7 +200,7 @@ function App() {
 {page === "binairo" && (
   <>
     <Binairo />
-    <BackButton onBack={() => setPage("page3")} />
+    <BackButton onBack={() => goBack("page3")} />
   </>
 )}
 
@@ -170,7 +208,7 @@ function App() {
   <>
     <AlbumSpinner />
     <DotField colors={[PUZZLE_COLORS.albums]} />
-    <BackButton onBack={() => setPage("page3")} />
+    <BackButton onBack={() => goBack("page3")} />
   </>
 )}
 
