@@ -1,5 +1,7 @@
-import { useEffect } from "react";
-import { motion, useAnimationControls, useMotionValue, useMotionTemplate, animate } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useAnimationControls, useMotionValue, animate } from "framer-motion";
+
+import { useJelly, cornerGradient, JELLY_PAD } from "./useJelly";
 
 const easeOutBlend = (k1, k2, w1 = 0.7, w2 = 0.3) => {
   const norm = w1 * (1 - Math.exp(-k1)) + w2 * (1 - Math.exp(-k2));
@@ -15,6 +17,14 @@ const easeInBlend = (k1, k2, w1, w2) => {
 };
 
 const BASE_COLOR = "245, 108, 98";
+
+const buildBackground = (a, w, h) =>
+  [
+    cornerGradient("tl", BASE_COLOR, a, 30, w, h),
+    cornerGradient("tr", BASE_COLOR, a, 100, w, h),
+    cornerGradient("bl", BASE_COLOR, a, 50, w, h),
+    cornerGradient("br", BASE_COLOR, a, 60, w, h),
+  ].join(", ");
 
 export default function FallingRectangle({ isZooming = false, isExiting = false, isHighlighted = false }) {
   const controls = useAnimationControls();
@@ -55,16 +65,17 @@ export default function FallingRectangle({ isZooming = false, isExiting = false,
   useEffect(() => {
     animate(alpha, isHighlighted ? 1 : 0.75, { duration: 0.3, ease: "easeOut" });
   }, [isHighlighted]);
-
-  const backgroundImage = useMotionTemplate`
-  radial-gradient(circle at top left, rgba(${BASE_COLOR}, ${alpha}), transparent 30%),
-  radial-gradient(circle at top right, rgba(${BASE_COLOR}, ${alpha}), transparent 100%),
-  radial-gradient(circle at bottom left, rgba(${BASE_COLOR}, ${alpha}), transparent 50%),
-  radial-gradient(circle at bottom right, rgba(${BASE_COLOR}, ${alpha}), transparent 60%)
-`;
+  const outerRef = useRef(null);
+  const innerRef = useJelly(outerRef, {
+    alpha,
+    buildBackground,
+    enabled: !isZooming && !isExiting,
+    settleMs: 3100,
+  });
 
 return (
   <motion.div
+    ref={outerRef}
     animate={controls}
     style={{
       position: "absolute",
@@ -75,8 +86,12 @@ return (
       height: "500px",
       zIndex: isZooming ? 500 : 1,
       filter: "blur(1.15px) brightness(1.15)",
-      backgroundImage,
     }}
-  />
+  >
+    <div
+      ref={innerRef}
+      style={{ position: "absolute", inset: -JELLY_PAD, pointerEvents: "none", clipPath: `inset(${JELLY_PAD}px)` }}
+    />
+  </motion.div>
 );
 }

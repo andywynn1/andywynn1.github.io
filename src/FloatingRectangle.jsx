@@ -1,6 +1,7 @@
-import { useEffect } from "react";
-import { motion, useAnimationControls, useMotionValue, useMotionTemplate, animate } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useAnimationControls, useMotionValue, animate } from "framer-motion";
 import { Icon } from "@iconify/react";
+import { useJelly, cornerGradient, JELLY_PAD } from "./useJelly";
 
 const easeOutBlend = (k1, k2, w1 = 0.7, w2 = 0.3) => {
   const norm = w1 * (1 - Math.exp(-k1)) + w2 * (1 - Math.exp(-k2));
@@ -32,6 +33,14 @@ const RECTANGLE_SETTLE_TIME = 0.6 + 2.5;
 const CONTACT_FADE_IN_DELAY = 1.8; // seconds after page load
 const CONTACT_FADE_IN_DURATION = 0.4;
 const CONTACT_FADE_OUT_DURATION = 0.4;
+
+const buildBackground = (a, w, h) =>
+  [
+    cornerGradient("tl", BASE_COLOR, a, 50, w, h),
+    cornerGradient("tr", BASE_COLOR, a, 100, w, h),
+    cornerGradient("bl", BASE_COLOR, a, 50, w, h),
+    cornerGradient("br", BASE_COLOR, a, 60, w, h),
+  ].join(", ");
 
 export default function FloatingRectangle({ isZooming = false, isExiting = false, isHighlighted = false }) {
   const controls = useAnimationControls();
@@ -102,13 +111,13 @@ export default function FloatingRectangle({ isZooming = false, isExiting = false
   useEffect(() => {
     animate(alpha, isHighlighted ? 1 : 0.75, { duration: 0.3, ease: "easeOut" });
   }, [isHighlighted]);
-
-  const backgroundImage = useMotionTemplate`
-    radial-gradient(circle at top left, rgba(${BASE_COLOR}, ${alpha}), transparent 50%),
-    radial-gradient(circle at top right, rgba(${BASE_COLOR}, ${alpha}), transparent 100%),
-    radial-gradient(circle at bottom left, rgba(${BASE_COLOR}, ${alpha}), transparent 50%),
-    radial-gradient(circle at bottom right, rgba(${BASE_COLOR}, ${alpha}), transparent 60%)
-  `;
+  const outerRef = useRef(null);
+  const innerRef = useJelly(outerRef, {
+    alpha,
+    buildBackground,
+    enabled: !isZooming && !isExiting,
+    settleMs: 3400,
+  });
 
   return (
     <>
@@ -137,6 +146,7 @@ export default function FloatingRectangle({ isZooming = false, isExiting = false
       `}</style>
 
       <motion.div
+        ref={outerRef}
         className="site-floating-box"
         animate={controls}
         style={{
@@ -144,9 +154,13 @@ export default function FloatingRectangle({ isZooming = false, isExiting = false
           borderRadius: "0px",
           zIndex: isZooming ? 500 : 2,
           filter: "blur(1.15px) brightness(1.15)",
-          backgroundImage,
         }}
-      />
+      >
+        <div
+          ref={innerRef}
+          style={{ position: "absolute", inset: -JELLY_PAD, pointerEvents: "none", clipPath: `inset(${JELLY_PAD}px)` }}
+        />
+      </motion.div>
 
       {/* Contact info overlay — anchored at the same spot as the rectangle's
           resting position, but never moves. It only ever fades in/out. */}
